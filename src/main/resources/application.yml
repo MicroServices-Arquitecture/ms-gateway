@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: ejemplo
+        uri: http://localhost:8080
+        predicates:
+        - Path=/api/ejemplo/**
+        filters:
+        - StripPrefix=2
+      - id: ejemplo
+        uri: lb://ejemplo-ex
+        predicates:
+        - Path=/api/ejemplo-ex/**
+        filters:
+        - StripPrefix=2
