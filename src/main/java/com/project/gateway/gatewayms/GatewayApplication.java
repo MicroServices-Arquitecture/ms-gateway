@@ -1,4 +1,4 @@
-package com.prject.gateway.gateway;
+package com.project.gateway.gatewayms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

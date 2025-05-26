@@ -8,9 +8,9 @@ spring:
         - Path=/api/ejemplo/**
         filters:
         - StripPrefix=2
-      - id: ejemplo
-        uri: lb://ejemplo-ex
+      - id: ms-usuarios
+        uri: http://localhost:8888
         predicates:
-        - Path=/api/ejemplo-ex/**
+        - Path=/api/users/**
         filters:
         - StripPrefix=2
