@@ -13,10 +13,14 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 public class GatewayApplication {
+
+	private static final Logger log = LoggerFactory.getLogger(GatewayApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(GatewayApplication.class, args);
@@ -29,14 +33,14 @@ public class GatewayApplication {
 			ServerHttpResponse response = exchange.getResponse();
 			HttpHeaders headers = response.getHeaders();
 
-			System.out.println("============ NUEVA REQUEST ============");
-			System.out.println("Método: " + request.getMethod());
-			System.out.println("Path: " + request.getPath());
-			System.out.println("Origin: " + request.getHeaders().getOrigin());
+			log.info("============ NUEVA REQUEST ============");
+			log.info("Método: " + request.getMethod());
+			log.info("Path: " + request.getPath());
+			log.info("Origin: " + request.getHeaders().getOrigin());
 
         	// Imprime headers antes
-			System.out.println("--- HEADERS ANTES ---");
-			headers.forEach((k, v) -> System.out.println(k + ": " + v));
+			log.info("--- HEADERS ANTES ---");
+			headers.forEach((k, v) -> log.info(k + ": " + v));
 
 			if (CorsUtils.isCorsRequest(request)){
 				String origin = request.getHeaders().getOrigin();
@@ -53,17 +57,17 @@ public class GatewayApplication {
 
 				if (request.getMethod() == HttpMethod.OPTIONS){
 					response.setStatusCode(HttpStatus.OK);
-					System.out.println("=== RESPUESTA OPCIONES COMPLETA ===");
-					System.out.println("--- HEADERS DESPUÉS ---");
-					headers.forEach((k, v) -> System.out.println(k + ": " + v));
+					log.info("=== RESPUESTA OPCIONES COMPLETA ===");
+					log.info("--- HEADERS DESPUÉS ---");
+					headers.forEach((k, v) -> log.info(k + ": " + v));
 					return response.setComplete();
 				}
 			}
 
 			// Imprime headers después
-			System.out.println("--- HEADERS DESPUÉS ---");
-			headers.forEach((k, v) -> System.out.println(k + ": " + v));
-			System.out.println("=====================================");
+			log.info("--- HEADERS DESPUÉS ---");
+			headers.forEach((k, v) -> log.info(k + ": " + v));
+			log.info("=====================================");
 
 			return chain.filter(exchange);
 		};
