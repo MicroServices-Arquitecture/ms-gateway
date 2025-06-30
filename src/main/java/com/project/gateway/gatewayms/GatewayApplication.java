@@ -42,7 +42,7 @@ public class GatewayApplication {
 			log.info("--- HEADERS ANTES ---");
 			headers.forEach((k, v) -> log.info(k + ": " + v));
 
-			if (CorsUtils.isCorsRequest(request)){
+			// if (CorsUtils.isCorsRequest(request)){
 				String origin = request.getHeaders().getOrigin();
 				headers.remove("Access-Control-Allow-Origin");
 				
@@ -62,7 +62,7 @@ public class GatewayApplication {
 					headers.forEach((k, v) -> log.info(k + ": " + v));
 					return response.setComplete();
 				}
-			}
+			
 
 			// Imprime headers después
 			log.info("--- HEADERS DESPUÉS ---");
@@ -70,7 +70,8 @@ public class GatewayApplication {
 			log.info("=====================================");
 
 			return chain.filter(exchange);
-		};
-	}
-
+	};
 }
+}
+
+
