@@ -33,9 +33,9 @@ public class GatewayApplication {
 				HttpHeaders headers = response.getHeaders();
 
 				String origin = request.getHeaders().getOrigin();
-				if ("http//localhost:5173".equals(origin) || 
+				headers.remove("Access-Control-Allow-Origin");
+				if ("http://localhost:5173".equals(origin) || 
 					"https://react-front-microservicios-production.up.railway.app".equals(origin)){
-						headers.remove("Access-Control-Allow-Origin");
 						headers.set("Access-Control-Allow-Origin", origin);
 				} 
 				// Avoid trailing slash which can break CORS matching
