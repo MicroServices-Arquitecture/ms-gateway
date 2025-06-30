@@ -14,8 +14,6 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
-import reactor.core.publisher.Mono;
-
 @SpringBootApplication
 @EnableDiscoveryClient
 public class GatewayApplication {
@@ -28,26 +26,45 @@ public class GatewayApplication {
 	public WebFilter corsFilter(){
 		return (ServerWebExchange exchange, WebFilterChain chain) ->{
 			ServerHttpRequest request = exchange.getRequest();
-			if (CorsUtils.isCorsRequest(request)){
-				ServerHttpResponse response = exchange.getResponse();
-				HttpHeaders headers = response.getHeaders();
+			ServerHttpResponse response = exchange.getResponse();
+			HttpHeaders headers = response.getHeaders();
 
+			System.out.println("============ NUEVA REQUEST ============");
+			System.out.println("Método: " + request.getMethod());
+			System.out.println("Path: " + request.getPath());
+			System.out.println("Origin: " + request.getHeaders().getOrigin());
+
+        	// Imprime headers antes
+			System.out.println("--- HEADERS ANTES ---");
+			headers.forEach((k, v) -> System.out.println(k + ": " + v));
+
+			if (CorsUtils.isCorsRequest(request)){
 				String origin = request.getHeaders().getOrigin();
 				headers.remove("Access-Control-Allow-Origin");
+				
 				if ("http://localhost:5173".equals(origin) || 
 					"https://react-front-microservicios-production.up.railway.app".equals(origin)){
 						headers.set("Access-Control-Allow-Origin", origin);
 				} 
-				// Avoid trailing slash which can break CORS matching
+				
 				headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 				headers.set("Access-Control-Allow-Headers", "*");
 				headers.set("Access-Control-Allow-Credentials", "true");
 
 				if (request.getMethod() == HttpMethod.OPTIONS){
 					response.setStatusCode(HttpStatus.OK);
+					System.out.println("=== RESPUESTA OPCIONES COMPLETA ===");
+					System.out.println("--- HEADERS DESPUÉS ---");
+					headers.forEach((k, v) -> System.out.println(k + ": " + v));
 					return response.setComplete();
 				}
 			}
+
+			// Imprime headers después
+			System.out.println("--- HEADERS DESPUÉS ---");
+			headers.forEach((k, v) -> System.out.println(k + ": " + v));
+			System.out.println("=====================================");
+
 			return chain.filter(exchange);
 		};
 	}
