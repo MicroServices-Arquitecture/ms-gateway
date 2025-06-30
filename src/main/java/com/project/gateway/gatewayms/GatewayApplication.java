@@ -31,8 +31,14 @@ public class GatewayApplication {
 			if (CorsUtils.isCorsRequest(request)){
 				ServerHttpResponse response = exchange.getResponse();
 				HttpHeaders headers = response.getHeaders();
-                                // Avoid trailing slash which can break CORS matching
-                headers.set("Access-Control-Allow-Origin", "https://react-front-microservicios-production.up.railway.app");
+
+				String origin = request.getHeaders().getOrigin();
+				if ("http//localhost:5173".equals(origin) || 
+					"https://react-front-microservicios-production.up.railway.app".equals(origin)){
+						headers.remove("Access-Control-Allow-Origin");
+						headers.set("Access-Control-Allow-Origin", origin);
+				} 
+				// Avoid trailing slash which can break CORS matching
 				headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 				headers.set("Access-Control-Allow-Headers", "*");
 				headers.set("Access-Control-Allow-Credentials", "true");
