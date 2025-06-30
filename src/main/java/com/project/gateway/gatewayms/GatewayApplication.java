@@ -32,7 +32,7 @@ public class GatewayApplication {
 				ServerHttpResponse response = exchange.getResponse();
 				HttpHeaders headers = response.getHeaders();
                                 // Avoid trailing slash which can break CORS matching
-                                headers.add("Access-Control-Allow-Origin", "*");
+                headers.add("Access-Control-Allow-Origin", "https://react-front-microservicios-production.up.railway.app/");
 				headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 				headers.add("Access-Control-Allow-Headers", "*");
 				headers.add("Access-Control-Allow-Credentials", "true");
