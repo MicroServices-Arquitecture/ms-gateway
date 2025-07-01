@@ -1,2 +1,2 @@
 com/project/gateway/gatewayms/GatewayApplication.class
-com/project/gateway/gatewayms/CorsConfig.class
+com/project/gateway/gatewayms/CorsGlobalConfig.class
